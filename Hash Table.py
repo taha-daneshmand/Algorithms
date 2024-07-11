@@ -442,4 +442,4 @@ class HashTable:
             elif isinstance(value, dict):
                 return {k: deep_copy_value(v) for k, v in value.items()}
             elif isinstance(value, set):
-                return {deep_copy_value(v)
+                return {deep_copy_value(v)}
