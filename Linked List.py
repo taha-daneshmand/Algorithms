@@ -180,3 +180,166 @@ class LinkedList:
             result = func(result, current.data)
             current = current.next
         return result
+
+    def min(self):
+        if self.is_empty():
+            raise ValueError("List is empty")
+        min_value = self.head.data
+        current = self.head.next
+        while current:
+            if current.data < min_value:
+                min_value = current.data
+            current = current.next
+        return min_value
+
+    def max(self):
+        if self.is_empty():
+            raise ValueError("List is empty")
+        max_value = self.head.data
+        current = self.head.next
+        while current:
+            if current.data > max_value:
+                max_value = current.data
+            current = current.next
+        return max_value
+
+    def sum(self):
+        total = 0
+        current = self.head
+        while current:
+            total += current.data
+            current = current.next
+        return total
+
+    def product(self):
+        result = 1
+        current = self.head
+        while current:
+            result *= current.data
+            current = current.next
+        return result
+
+    def mean(self):
+        if self.is_empty():
+            raise ValueError("List is empty")
+        return self.sum() / self.size
+
+    def median(self):
+        if self.is_empty():
+            raise ValueError("List is empty")
+        sorted_data = sorted(self)
+        mid = self.size // 2
+        if self.size % 2 == 0:
+            return (sorted_data[mid - 1] + sorted_data[mid]) / 2
+        return sorted_data[mid]
+
+    def mode(self):
+        if self.is_empty():
+            raise ValueError("List is empty")
+        frequency = {}
+        current = self.head
+        while current:
+            frequency[current.data] = frequency.get(current.data, 0) + 1
+            current = current.next
+        max_count = max(frequency.values())
+        modes = [k for k, v in frequency.items() if v == max_count]
+        return modes if len(modes) > 1 else modes[0]
+
+    def variance(self):
+        if self.is_empty():
+            raise ValueError("List is empty")
+        mean_value = self.mean()
+        return sum((x - mean_value) ** 2 for x in self) / self.size
+
+    def std_dev(self):
+        return self.variance() ** 0.5
+
+    def all(self):
+        return all(self)
+
+    def any(self):
+        return any(self)
+
+    def is_sorted(self):
+        current = self.head
+        while current and current.next:
+            if current.data > current.next.data:
+                return False
+            current = current.next
+        return True
+
+    def swap(self, i, j):
+        if i < 0 or i >= self.size or j < 0 or j >= self.size:
+            raise IndexError("Invalid index")
+        node_i = self._get_node(i)
+        node_j = self._get_node(j)
+        node_i.data, node_j.data = node_j.data, node_i.data
+
+    def rotate_left(self, n):
+        if self.is_empty() or n == 0:
+            return
+        n = n % self.size
+        for _ in range(n):
+            data = self.pop(0)
+            self.append(data)
+
+    def rotate_right(self, n):
+        if self.is_empty() or n == 0:
+            return
+        n = n % self.size
+        for _ in range(n):
+            data = self.pop(self.size - 1)
+            self.prepend(data)
+
+    def unique(self):
+        seen = set()
+        current = self.head
+        while current:
+            if current.data in seen:
+                next_node = current.next
+                self._remove_node(current)
+                current = next_node
+            else:
+                seen.add(current.data)
+                current = current.next
+
+    def to_list(self):
+        return list(self)
+
+    def from_list(self, lst):
+        self.clear()
+        for item in lst:
+            self.append(item)
+
+    def sample(self, k):
+        import random
+        if k > self.size:
+            raise ValueError("Sample larger than population")
+        indices = random.sample(range(self.size), k)
+        return [self[i] for i in indices]
+
+    def apply(self, func):
+        current = self.head
+        while current:
+            current.data = func(current.data)
+            current = current.next
+
+    def transform(self, func):
+        new_list = LinkedList()
+        current = self.head
+        while current:
+            new_list.append(func(current.data))
+            current = current.next
+        return new_list
+
+    def reduce_max(self):
+        return self.reduce(lambda a, b: a if a > b else b)
+
+    def reduce_min(self):
+        return self.reduce(lambda a, b: a if a < b else b)
+
+    def reduce_sum(self):
+        return self.reduce(lambda a, b: a + b)
+
+    def reduce_prod(self):
+        return self.reduce(lambda a, b: a * b)
