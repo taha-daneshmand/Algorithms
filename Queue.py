@@ -93,7 +93,6 @@ class Queue:
     def index(self, item):
         return self.items.index(item)
 
-    # Additional methods
     def min(self):
         if self.is_empty():
             raise ValueError("Queue is empty")
