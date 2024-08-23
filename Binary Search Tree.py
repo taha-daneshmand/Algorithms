@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, key):
+    def __init__(self, key: int):
         self.key = key
         self.left = None
         self.right = None
@@ -9,13 +9,13 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
-    def insert(self, key):
+    def insert(self, key: int) -> None:
         if self.root is None:
             self.root = Node(key)
         else:
             self._insert(self.root, key)
 
-    def _insert(self, node, key):
+    def _insert(self, node: Node, key: int) -> None:
         if key < node.key:
             if node.left is None:
                 node.left = Node(key)
@@ -27,20 +27,20 @@ class BinarySearchTree:
             else:
                 self._insert(node.right, key)
 
-    def search(self, key):
+    def search(self, key: int) -> Node:
         return self._search(self.root, key)
 
-    def _search(self, node, key):
+    def _search(self, node: Node, key: int) -> Node:
         if node is None or node.key == key:
             return node
         if key < node.key:
             return self._search(node.left, key)
         return self._search(node.right, key)
 
-    def delete(self, key):
+    def delete(self, key: int) -> None:
         self.root = self._delete(self.root, key)
 
-    def _delete(self, node, key):
+    def _delete(self, node: Node, key: int) -> Node:
         if node is None:
             return node
         if key < node.key:
@@ -57,16 +57,16 @@ class BinarySearchTree:
             node.right = self._delete(node.right, temp.key)
         return node
 
-    def _min_value_node(self, node):
+    def _min_value_node(self, node: Node) -> Node:
         current = node
         while current.left is not None:
             current = current.left
         return current
 
-    def inorder(self):
+    def inorder(self) -> list:
         return self._inorder(self.root)
 
-    def _inorder(self, node):
+    def _inorder(self, node: Node) -> list:
         res = []
         if node:
             res = self._inorder(node.left)
@@ -74,10 +74,10 @@ class BinarySearchTree:
             res = res + self._inorder(node.right)
         return res
 
-    def preorder(self):
+    def preorder(self) -> list:
         return self._preorder(self.root)
 
-    def _preorder(self, node):
+    def _preorder(self, node: Node) -> list:
         res = []
         if node:
             res.append(node.key)
@@ -85,10 +85,10 @@ class BinarySearchTree:
             res = res + self._preorder(node.right)
         return res
 
-    def postorder(self):
+    def postorder(self) -> list:
         return self._postorder(self.root)
 
-    def _postorder(self, node):
+    def _postorder(self, node: Node) -> list:
         res = []
         if node:
             res = self._postorder(node.left)
@@ -96,18 +96,18 @@ class BinarySearchTree:
             res.append(node.key)
         return res
 
-    def height(self):
+    def height(self) -> int:
         return self._height(self.root)
 
-    def _height(self, node):
+    def _height(self, node: Node) -> int:
         if node is None:
             return -1
         left_height = self._height(node.left)
         right_height = self._height(node.right)
         return 1 + max(left_height, right_height)
 
-    def is_balanced(self):
-        def check(node):
+    def is_balanced(self) -> bool:
+        def check(node: Node) -> tuple[int, bool]:
             if not node:
                 return 0, True
             lh, lb = check(node.left)
@@ -118,7 +118,7 @@ class BinarySearchTree:
 
         return check(self.root)[1]
 
-    def level_order(self):
+    def level_order(self) -> list:
         if not self.root:
             return []
         queue, res = [self.root], []
@@ -131,12 +131,12 @@ class BinarySearchTree:
                 queue.append(current.right)
         return res
 
-    def min_value(self):
+    def min_value(self) -> int:
         if self.root is None:
             return None
         return self._min_value_node(self.root).key
 
-    def max_value(self):
+    def max_value(self) -> int:
         if self.root is None:
             return None
         current = self.root
@@ -144,10 +144,10 @@ class BinarySearchTree:
             current = current.right
         return current.key
 
-    def find_lca(self, n1, n2):
+    def find_lca(self, n1: int, n2: int) -> Node:
         return self._find_lca(self.root, n1, n2)
 
-    def _find_lca(self, node, n1, n2):
+    def _find_lca(self, node: Node, n1: int, n2: int) -> Node:
         if node is None:
             return None
         if node.key > n1 and node.key > n2:
@@ -156,11 +156,11 @@ class BinarySearchTree:
             return self._find_lca(node.right, n1, n2)
         return node
 
-    def distance(self, n1, n2):
+    def distance(self, n1: int, n2: int) -> int:
         lca = self.find_lca(n1, n2)
         return self._distance_from_lca(lca, n1) + self._distance_from_lca(lca, n2)
 
-    def _distance_from_lca(self, node, key):
+    def _distance_from_lca(self, node: Node, key: int) -> int:
         if node is None:
             return -1
         if node.key == key:
@@ -169,7 +169,7 @@ class BinarySearchTree:
             return 1 + self._distance_from_lca(node.left, key)
         return 1 + self._distance_from_lca(node.right, key)
 
-    def kth_smallest(self, k):
+    def kth_smallest(self, k: int) -> int:
         stack = []
         current = self.root
         while True:
@@ -182,7 +182,7 @@ class BinarySearchTree:
                 return current.key
             current = current.right
 
-    def kth_largest(self, k):
+    def kth_largest(self, k: int) -> int:
         stack = []
         current = self.root
         while True:
@@ -195,24 +195,24 @@ class BinarySearchTree:
                 return current.key
             current = current.left
 
-    def sum(self):
+    def sum(self) -> int:
         return self._sum(self.root)
 
-    def _sum(self, node):
+    def _sum(self, node: Node) -> int:
         if node is None:
             return 0
         return node.key + self._sum(node.left) + self._sum(node.right)
 
-    def count(self):
+    def count(self) -> int:
         return self._count(self.root)
 
-    def _count(self, node):
+    def _count(self, node: Node) -> int:
         if node is None:
             return 0
         return 1 + self._count(node.left) + self._count(node.right)
 
-    def is_symmetric(self):
-        def is_mirror(t1, t2):
+    def is_symmetric(self) -> bool:
+        def is_mirror(t1: Node, t2: Node) -> bool:
             if not t1 and not t2:
                 return True
             if not t1 or not t2:
@@ -223,13 +223,13 @@ class BinarySearchTree:
 
         return is_mirror(self.root, self.root)
 
-    def find_path(self, key):
+    def find_path(self, key: int) -> list:
         path = []
         if not self._find_path(self.root, path, key):
             return None
         return path
 
-    def _find_path(self, node, path, key):
+    def _find_path(self, node: Node, path: list, key: int) -> bool:
         if node is None:
             return False
         path.append(node.key)
@@ -241,12 +241,12 @@ class BinarySearchTree:
         path.pop()
         return False
 
-    def nodes_at_distance_k(self, k):
+    def nodes_at_distance_k(self, k: int) -> list:
         result = []
         self._nodes_at_distance_k(self.root, k, result)
         return result
 
-    def _nodes_at_distance_k(self, node, k, result):
+    def _nodes_at_distance_k(self, node: Node, k: int, result: list) -> None:
         if node is None:
             return
         if k == 0:
@@ -255,8 +255,8 @@ class BinarySearchTree:
         self._nodes_at_distance_k(node.left, k-1, result)
         self._nodes_at_distance_k(node.right, k-1, result)
 
-    def mirror(self):
-        def mirror_tree(node):
+    def mirror(self) -> None:
+        def mirror_tree(node: Node) -> Node:
             if node is None:
                 return None
             node.left, node.right = mirror_tree(node.right), mirror_tree(node.left)
@@ -264,8 +264,8 @@ class BinarySearchTree:
 
         self.root = mirror_tree(self.root)
 
-    def is_mirror(self, other_tree):
-        def is_mirror_tree(n1, n2):
+    def is_mirror(self, other_tree: 'BinarySearchTree') -> bool:
+        def is_mirror_tree(n1: Node, n2: Node) -> bool:
             if not n1 and not n2:
                 return True
             if not n1 or not n2:
@@ -276,21 +276,21 @@ class BinarySearchTree:
 
         return is_mirror_tree(self.root, other_tree.root)
 
-    def max_path_sum(self):
-        def max_sum_util(node):
+    def max_path_sum(self) -> int:
+        def max_sum_util(node: Node) -> int:
             if node is None:
                 return 0
             left = max(0, max_sum_util(node.left))
             right = max(0, max_sum_util(node.right))
-            max_path_sum_util.max_sum = max(max_path_sum_util.max_sum, left + right + node.key)
+            max_sum_util.max_sum = max(max_sum_util.max_sum, left + right + node.key)
             return node.key + max(left, right)
 
-        max_path_sum_util.max_sum = float('-inf')
+        max_sum_util.max_sum = float('-inf')
         max_sum_util(self.root)
-        return max_path_sum_util.max_sum
+        return max_sum_util.max_sum
 
-    def invert(self):
-        def invert_tree(node):
+    def invert(self) -> None:
+        def invert_tree(node: Node) -> Node:
             if node is None:
                 return None
             node.left, node.right = invert_tree(node.right), invert_tree(node.left)
@@ -298,8 +298,8 @@ class BinarySearchTree:
 
         self.root = invert_tree(self.root)
 
-    def path_sum(self, sum):
-        def path_sum_util(node, remaining_sum, path, result):
+    def path_sum(self, sum: int) -> list:
+        def path_sum_util(node: Node, remaining_sum: int, path: list, result: list) -> None:
             if node is None:
                 return
             path.append(node.key)
@@ -315,8 +315,8 @@ class BinarySearchTree:
         path_sum_util(self.root, sum, [], result)
         return result
 
-    def lowest_common_ancestor(self, p, q):
-        def lca_util(node, p, q):
+    def lowest_common_ancestor(self, p: int, q: int) -> Node:
+        def lca_util(node: Node, p: int, q: int) -> Node:
             if node is None:
                 return None
             if node.key > p and node.key > q:
@@ -327,7 +327,7 @@ class BinarySearchTree:
 
         return lca_util(self.root, p, q)
 
-    def right_side_view(self):
+    def right_side_view(self) -> list:
         result = []
         if not self.root:
             return result
@@ -344,7 +344,7 @@ class BinarySearchTree:
                     queue.append(node.right)
         return result
 
-    def left_side_view(self):
+    def left_side_view(self) -> list:
         result = []
         if not self.root:
             return result
@@ -361,7 +361,7 @@ class BinarySearchTree:
                     queue.append(node.right)
         return result
 
-    def vertical_order(self):
+    def vertical_order(self) -> list:
         from collections import defaultdict, deque
         if not self.root:
             return []
@@ -376,7 +376,7 @@ class BinarySearchTree:
                 queue.append((node.right, column + 1))
         return [column_table[x] for x in sorted(column_table.keys())]
 
-    def zigzag_level_order(self):
+    def zigzag_level_order(self) -> list:
         result = []
         if not self.root:
             return result
@@ -399,8 +399,8 @@ class BinarySearchTree:
             left_to_right = not left_to_right
         return result
 
-    def sum_of_left_leaves(self):
-        def left_leaves_sum(node, is_left):
+    def sum_of_left_leaves(self) -> int:
+        def left_leaves_sum(node: Node, is_left: bool) -> int:
             if node is None:
                 return 0
             if node.left is None and node.right is None and is_left:
@@ -409,8 +409,8 @@ class BinarySearchTree:
 
         return left_leaves_sum(self.root, False)
 
-    def range_sum_bst(self, low, high):
-        def range_sum(node, low, high):
+    def range_sum_bst(self, low: int, high: int) -> int:
+        def range_sum(node: Node, low: int, high: int) -> int:
             if node is None:
                 return 0
             if node.key < low:
@@ -421,8 +421,8 @@ class BinarySearchTree:
 
         return range_sum(self.root, low, high)
 
-    def diameter(self):
-        def diameter_util(node):
+    def diameter(self) -> int:
+        def diameter_util(node: Node) -> tuple[int, int]:
             if node is None:
                 return 0, 0
             left_height, left_diameter = diameter_util(node.left)
@@ -433,11 +433,11 @@ class BinarySearchTree:
 
         return diameter_util(self.root)[1]
 
-    def max_depth(self):
+    def max_depth(self) -> int:
         return self.height()
 
-    def min_depth(self):
-        def min_depth_util(node):
+    def min_depth(self) -> int:
+        def min_depth_util(node: Node) -> int:
             if node is None:
                 return 0
             if not node.left:
@@ -448,8 +448,8 @@ class BinarySearchTree:
 
         return min_depth_util(self.root)
 
-    def path_sum_root_to_leaf(self, sum):
-        def path_sum_util(node, remaining_sum):
+    def path_sum_root_to_leaf(self, sum: int) -> bool:
+        def path_sum_util(node: Node, remaining_sum: int) -> bool:
             if node is None:
                 return False
             remaining_sum -= node.key
@@ -459,11 +459,11 @@ class BinarySearchTree:
 
         return path_sum_util(self.root, sum)
 
-    def has_path_sum(self, sum):
+    def has_path_sum(self, sum: int) -> bool:
         return self.path_sum_root_to_leaf(sum)
 
-    def leaf_nodes(self):
-        def leaf_nodes_util(node, leaves):
+    def leaf_nodes(self) -> list:
+        def leaf_nodes_util(node: Node, leaves: list) -> None:
             if node is None:
                 return
             if not node.left and not node.right:
@@ -475,22 +475,22 @@ class BinarySearchTree:
         leaf_nodes_util(self.root, leaves)
         return leaves
 
-    def boundary_traversal(self):
-        def left_boundary(node):
+    def boundary_traversal(self) -> list:
+        def left_boundary(node: Node) -> list:
             if node is None or (node.left is None and node.right is None):
                 return []
             if node.left:
                 return [node.key] + left_boundary(node.left)
             return [node.key] + left_boundary(node.right)
 
-        def right_boundary(node):
+        def right_boundary(node: Node) -> list:
             if node is None or (node.left is None and node.right is None):
                 return []
             if node.right:
                 return right_boundary(node.right) + [node.key]
             return right_boundary(node.left) + [node.key]
 
-        def leaves(node):
+        def leaves(node: Node) -> list:
             if node is None:
                 return []
             if node.left is None and node.right is None:
@@ -501,7 +501,7 @@ class BinarySearchTree:
             return []
         return [self.root.key] + left_boundary(self.root.left) + leaves(self.root.left) + leaves(self.root.right) + right_boundary(self.root.right)
 
-    def top_view(self):
+    def top_view(self) -> list:
         if not self.root:
             return []
         top_view_map = {}
@@ -516,7 +516,7 @@ class BinarySearchTree:
                 queue.append((node.right, hd + 1))
         return [top_view_map[key] for key in sorted(top_view_map.keys())]
 
-    def bottom_view(self):
+    def bottom_view(self) -> list:
         if not self.root:
             return []
         bottom_view_map = {}
@@ -530,7 +530,7 @@ class BinarySearchTree:
                 queue.append((node.right, hd + 1))
         return [bottom_view_map[key] for key in sorted(bottom_view_map.keys())]
 
-    def diagonal_traversal(self):
+    def diagonal_traversal(self) -> list:
         if not self.root:
             return []
         diagonal_map = {}
@@ -550,7 +550,7 @@ class BinarySearchTree:
             result += diagonal_map[k]
         return result
 
-    def construct_from_preorder_inorder(self, preorder, inorder):
+    def construct_from_preorder_inorder(self, preorder: list, inorder: list) -> Node:
         if not preorder or not inorder:
             return None
         root = Node(preorder[0])
@@ -559,7 +559,7 @@ class BinarySearchTree:
         root.right = self.construct_from_preorder_inorder(preorder[mid+1:], inorder[mid+1:])
         return root
 
-    def construct_from_inorder_postorder(self, inorder, postorder):
+    def construct_from_inorder_postorder(self, inorder: list, postorder: list) -> Node:
         if not inorder or not postorder:
             return None
         root = Node(postorder.pop())
@@ -568,7 +568,7 @@ class BinarySearchTree:
         root.left = self.construct_from_inorder_postorder(inorder[:mid], postorder)
         return root
 
-    def construct_from_preorder_postorder(self, preorder, postorder):
+    def construct_from_preorder_postorder(self, preorder: list, postorder: list) -> Node:
         if not preorder or not postorder:
             return None
         root = Node(preorder.pop(0))
@@ -578,8 +578,8 @@ class BinarySearchTree:
             root.right = self.construct_from_preorder_postorder(preorder, postorder[i+1:])
         return root
 
-    def path_sum_all(self, sum):
-        def path_sum_all_util(node, remaining_sum, path, result):
+    def path_sum_all(self, sum: int) -> list:
+        def path_sum_all_util(node: Node, remaining_sum: int, path: list, result: list) -> None:
             if node is None:
                 return
             path.append(node.key)
@@ -595,10 +595,10 @@ class BinarySearchTree:
         path_sum_all_util(self.root, sum, [], result)
         return result
 
-    def sum_of_nodes(self):
+    def sum_of_nodes(self) -> int:
         return self.sum()
 
-    def average_of_levels(self):
+    def average_of_levels(self) -> list:
         if not self.root:
             return []
         queue = [self.root]
@@ -616,7 +616,7 @@ class BinarySearchTree:
             result.append(level_sum / level_count)
         return result
 
-    def max_level_sum(self):
+    def max_level_sum(self) -> int:
         if not self.root:
             return 0
         max_sum = float('-inf')
@@ -633,8 +633,8 @@ class BinarySearchTree:
             max_sum = max(max_sum, level_sum)
         return max_sum
 
-    def count_good_nodes(self):
-        def count_good_nodes_util(node, max_value):
+    def count_good_nodes(self) -> int:
+        def count_good_nodes_util(node: Node, max_value: int) -> int:
             if node is None:
                 return 0
             total = 1 if node.key >= max_value else 0
@@ -645,7 +645,7 @@ class BinarySearchTree:
 
         return count_good_nodes_util(self.root, float('-inf'))
 
-    def is_complete(self):
+    def is_complete(self) -> bool:
         if not self.root:
             return True
         queue = [self.root]
@@ -661,8 +661,20 @@ class BinarySearchTree:
                 queue.append(node.right)
         return True
 
-    def all_root_to_leaf_paths(self):
-        def all_paths_util(node, path, result):
+    def is_perfect(self) -> bool:
+        def check_perfect(node: Node) -> tuple[int, bool]:
+            if not node:
+                return 0, True
+            lh, lp = check_perfect(node.left)
+            rh, rp = check_perfect(node.right)
+            h = max(lh, rh) + 1
+            p = lp and rp and lh == rh
+            return h, p
+
+        return check_perfect(self.root)[1]
+
+    def all_root_to_leaf_paths(self) -> list:
+        def all_paths_util(node: Node, path: list, result: list) -> None:
             if node is None:
                 return
             path.append(node.key)
@@ -677,8 +689,8 @@ class BinarySearchTree:
         all_paths_util(self.root, [], result)
         return result
 
-    def prune(self, sum):
-        def prune_util(node, sum):
+    def prune(self, sum: int) -> None:
+        def prune_util(node: Node, sum: int) -> Node:
             if node is None:
                 return None
             node.left = prune_util(node.left, sum - node.key)
@@ -689,8 +701,8 @@ class BinarySearchTree:
 
         self.root = prune_util(self.root, sum)
 
-    def sum_of_path_numbers(self):
-        def sum_path_util(node, current_sum):
+    def sum_of_path_numbers(self) -> int:
+        def sum_path_util(node: Node, current_sum: int) -> int:
             if node is None:
                 return 0
             current_sum = current_sum * 10 + node.key
@@ -700,16 +712,16 @@ class BinarySearchTree:
 
         return sum_path_util(self.root, 0)
 
-    def serialize(self):
-        def serialize_util(node):
+    def serialize(self) -> str:
+        def serialize_util(node: Node) -> str:
             if node is None:
                 return "None,"
             return str(node.key) + "," + serialize_util(node.left) + serialize_util(node.right)
 
         return serialize_util(self.root)
 
-    def deserialize(self, data):
-        def deserialize_util(data_list):
+    def deserialize(self, data: str) -> None:
+        def deserialize_util(data_list: list) -> Node:
             if data_list[0] == "None":
                 data_list.pop(0)
                 return None
@@ -721,3 +733,35 @@ class BinarySearchTree:
 
         data_list = data.split(',')
         self.root = deserialize_util(data_list[:-1])
+
+    def count_leaves(self) -> int:
+        def count_leaves_util(node: Node) -> int:
+            if node is None:
+                return 0
+            if node.left is None and node.right is None:
+                return 1
+            return count_leaves_util(node.left) + count_leaves_util(node.right)
+
+        return count_leaves_util(self.root)
+
+    def count_full_nodes(self) -> int:
+        def count_full_nodes_util(node: Node) -> int:
+            if node is None:
+                return 0
+            count = 1 if node.left and node.right else 0
+            count += count_full_nodes_util(node.left)
+            count += count_full_nodes_util(node.right)
+            return count
+
+        return count_full_nodes_util(self.root)
+
+    def count_single_child_nodes(self) -> int:
+        def count_single_child_nodes_util(node: Node) -> int:
+            if node is None:
+                return 0
+            count = 1 if (node.left and not node.right) or (not node.left and node.right) else 0
+            count += count_single_child_nodes_util(node.left)
+            count += count_single_child_nodes_util(node.right)
+            return count
+
+        return count_single_child_nodes_util(self.root)
